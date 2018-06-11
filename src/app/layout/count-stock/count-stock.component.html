@@ -1,0 +1,165 @@
+<!-- ///////////////////////////////////// form insert  /////////////////////////////////////////-->
+  <div [hidden]="globals.showform">
+
+    <form ngNativeValidate (ngSubmit)="insertCountStock()">  
+      <div class="row justify-content-center">       <!-- /////////////// class="row justify-content" ///////////////-->
+
+        <div class="col-lg-6">         <!--//////////////////// class="col-lg-6 ////////////////////-->
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <div class="input-group-addon col-5">Supplier ID</div>
+                <input type="text" class="form-control" maxlength="20" 
+                       name="SUPPLIER_ID" [(ngModel)]="insertCS.SUPPLIER_ID" required> 
+              </div>
+            </div>  
+          </div> 
+                
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <span class="input-group-addon col-5"> Start Date  </span>  
+                <input class="form-control" type="text" placeholder="yyyy-mm-dd"  
+                       name="START_DATE_COUNT_STOCK" [(ngModel)]="insertCS.START_DATE_COUNT_STOCK" 
+                       ngbDatepicker #d="ngbDatepicker" (focus)="d.toggle()" required>
+                <div class="input-group-addon" (click)="d.toggle()">
+                  <span class="fa fa-calendar"></span> 
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <app-count-stock-datepicker [date]="insertCS.START_DATE_COUNT_STOCK" (endDate)="SendEndD($event)">
+          </app-count-stock-datepicker>
+  
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <span class="input-group-addon col-5">Start Time </span> 
+                <input type="time" class="form-control" name="START_TIME_COUNT_STOCK"  
+                       [(ngModel)]="insertCS.START_TIME_COUNT_STOCK" required>
+              </div>
+            </div>
+          </div>
+     
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <span class="input-group-addon col-5">End Time </span> 
+                <input type="time" class="form-control" name="END_TIME_COUNT_STOCK"  
+                        [(ngModel)]="insertCS.END_TIME_COUNT_STOCK" required>
+              </div>
+            </div>
+          </div>
+ 
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <div class="input-group-addon col-5">Coordinators</div>
+                <input type="text" class="form-control" maxlength="50" 
+                       name="COORDINATORS" [(ngModel)]="insertCS.COORDINATORS" required> 
+              </div>
+            </div>
+          </div>  
+
+
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <div class="input-group-addon col-5">Tel</div>
+                <input type="text" class="form-control" maxlength="30" 
+                       name="COORDINATORS_TEL" [(ngModel)]="insertCS.COORDINATORS_TEL" required> 
+              </div>
+            </div>
+          </div> 
+        </div>         <!--//////////////////// class="col-lg-6 ////////////////////-->
+
+        <div class="col-lg-6">     <!--//////////////////// class="col-lg-6 ////////////////////-->
+
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <div class="input-group-addon col-5">Number Of Team </div>
+                <input type="number" class="form-control" #num (keyup)="checkNum(num.value)" 
+                  name="Number_Of_Team_CS" name="NUMBER_OF_TEAM_COUNTSTOCK" [(ngModel)]="insertCS.NUMBER_OF_TEAM_COUNTSTOCK" required> 
+              </div>
+            </div>
+          </div>  
+
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <div class="input-group-addon col-5">Equipment</div>
+                <input type="text" class="form-control" maxlength="150" name="EQUIPMENT" [(ngModel)]="insertCS.EQUIPMENT" required> 
+              </div>
+            </div>  
+          </div>
+
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <div class="input-group-addon col-5">หมายเหตุ</div>
+                <input type="text" class="form-control" maxlength="200" 
+                       name="REMARK" [(ngModel)]="insertCS.REMARK" > 
+              </div>
+            </div>  
+          </div>
+
+      </div>       <!--//////////////////// class="col-lg-6 ////////////////////-->
+
+        <button type="submit" class="btn btn-2 btn-success"> Submit </button> &nbsp;   &nbsp;
+        <button (click)="cancel()" type="button" class="btn btn-2 btn-danger"> Cancel </button>  
+
+      </div>  
+    </form>
+</div>
+<!-- /////////////////////////////////// Form Insert  ///////////////////////////////////////-->
+
+
+<!-- /////////////////////////////////// Show Table  ///////////////////////////////////////-->
+
+  <div  [hidden]="globals.showtable">
+    <table class="table  table-striped " 
+          datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+      <thead>
+        <tr>
+          <th [hidden]="globals.showcolum">Event</th> 
+          <th>Supplier ID</th>                        
+          <th>Start Date</th>                      
+          <th>End Date</th>                  
+          <th>Start Time</th>                   
+          <th>End Time</th>                
+          <th>Coordinators</th>                   
+          <th>Tel</th>                   
+          <th>Number Of Team</th>                 
+          <th>Equipment</th>                
+          <th>Remark</th>                                                   
+        </tr>
+      </thead>
+      <tbody>   
+        <tr *ngFor='let file of files; trackBy: index;let i= index'>
+          <td [hidden]="globals.showcolum" >
+            <button (click)="editItemCs(i)" [hidden]="globals.editmode" type="button" class="btn btn-warning btn-sm">Update</button>
+            <button (click)="deleteCStock(file.COUNT_STOCK_ITEM_ID)" [hidden]="globals.deletemode" type="button" class="btn btn-danger btn-sm"> &nbsp;Delete&nbsp; </button>
+          </td>
+          <td>{{ file.SUPPLIER_ID }}</td>                                   
+          <td>{{ file.START_DATE_COUNT_STOCK }}</td>                                 
+          <td>{{ file.END_DATE_COUNT_STOCK }}</td>                             
+          <td>{{ file.START_TIME_COUNT_STOCK }}</td>                              
+          <td>{{ file.END_TIME_COUNT_STOCK }}</td>                           
+          <td>{{ file.COORDINATORS }}</td>                              
+          <td>{{ file.COORDINATORS_TEL }}</td>                              
+          <td>{{ file.NUMBER_OF_TEAM_COUNTSTOCK }}</td>                            
+          <td>{{ file.EQUIPMENT }}</td>                           
+          <td>{{ file.REMARK }}</td>                                                                                             
+        </tr>
+      </tbody>
+    </table>
+    
+  </div>
+
+
+
+
+
+

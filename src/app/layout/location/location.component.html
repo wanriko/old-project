@@ -1,0 +1,156 @@
+hi
+<!-- 
+  <div [hidden]="globals.showform">
+
+    <form [ngBusy]="busy" ngNativeValidate (ngSubmit)="doSubmitCG()">
+      <div   class="row justify-content-center">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <span class="input-group-addon col-5">Supplier</span>
+                <input type="text" class="form-control input-sm" id="SUPPLIER_ID" [(ngModel)]="CG.SUPPLIER_ID" maxlength="15" required name="SUPPLIER_ID">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <span class="input-group-addon col-5">Start Date</span>
+                <input class="form-control"  type="text" placeholder="yyyy-mm-dd" name="START_DATE_CNANGE_GRADE" [(ngModel)]="CG.START_DATE_CNANGE_GRADE"
+                  ngbDatepicker #A="ngbDatepicker"  (focus)="A.toggle()" required>
+                <div class="input-group-addon" (click)="A.toggle()">
+                  <span class="fa fa-calendar"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+<app-change-grade-datepicker [date]="CG.START_DATE_CNANGE_GRADE"  (dateend)="enddate($event)"> </app-change-grade-datepicker>
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <span class="input-group-addon col-5">Item ID</span>
+                <input type="text" class="form-control input-sm" id="ITEM_CHANGE" maxlength="15" [(ngModel)]="CG.ITEM_CHANGE" required name="ITEM_CHANGE"
+                  [disabled]="showformmode">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <span class="input-group-addon col-5">Barcode</span>
+                <input type="text" class="form-control input-sm" id="BARCODE_ITEM_CHANGE" minlength="13" maxlength="13" [(ngModel)]="CG.BARCODE_ITEM_CHANGE"
+                  required name="BARCODE_ITEM_CHANGE" >
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <span class="input-group-addon col-5">New Item ID</span>
+                <input type="text" class="form-control input-sm" id="NEW_ITEM_CHANGE" maxlength="15" [(ngModel)]="CG.NEW_ITEM_CHANGE" required
+                  name="NEW_ITEM_CHANGE">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <span class="input-group-addon col-5">New Barcode</span>
+                <input type="text" class="form-control input-sm" id="BARCODE_NEW_ITEM_CHANGE" minlength="13" maxlength="13" [(ngModel)]="CG.BARCODE_NEW_ITEM_CHANGE"
+                  required name="BARCODE_NEW_ITEM_CHANGE"  >
+                  <button type="button" class="btn btn-primary" (click)="startScan()"> Scan </button> 
+              </div>
+<!--qr -->
+ <!--            <div [hidden]="cam">
+                <select (change)="onChange($event.target.value)">
+                    <option *ngFor="let device of availableDevices" [value]="device.deviceId">{{ device.label }}</option>
+                  </select>
+              <br>
+              <ngx-zxing [start]="startCam" [device]="selectedDevice" (onCamsFound)="displayCameras($event)" (onScan)="handleQrCodeResult($event)"></ngx-zxing>
+              <br>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <span class="input-group-addon col-5">Coordinators</span>
+                <input type="text" class="form-control input-sm" id="COORDINATORS" maxlength="40" [(ngModel)]="CG.COORDINATORS" required name="COORDINATORS">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="form-group">
+            <div class="col-6">
+              <div class="input-group">
+                <span class="input-group-addon col-5">Tel</span>
+                <input type="text" class="form-control input-sm" id="COORDINATORS_TEL" maxlength="30" [(ngModel)]="CG.COORDINATORS_TEL" required name="COORDINATORS_TEL">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-10">
+              <div class="input-group">
+                <span class="input-group-addon col-3">หมายเหตุ</span>
+                <input type="text" class="form-control input-sm" id="REMARK" maxlength="200" [(ngModel)]="CG.REMARK" name="REMARK">
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <button type="submit" class="btn btn-success">Submit</button>&nbsp;
+        <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
+      </div>
+    </form>
+
+  </div>
+
+  <div [hidden]="globals.showtable">
+      <table  [ngBusy]="busy" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table  table-striped">
+        <thead>
+          <tr>
+            <th [hidden]="globals.showcolum">Event</th>
+            <th>Supplier</th>
+            <th>Item ID</th>
+            <th>Barcode</th>
+            <th>New Item ID</th>
+            <th>New Barcode</th>
+            <th>Coordinators</th>
+            <th>Tel</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>หมายเหตุ</th>
+      
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dataCG of dataCGs;let i = index;">
+            <td [hidden]="globals.showcolum">
+              <button [hidden]="globals.editmode" class="btn btn-sm btn-warning" (click)="Update(i)">Update</button>
+              <button [hidden]="globals.deletemode" class="btn btn-sm btn-danger" (click)="Delete(dataCG.CHANGE_GRADE_ITEM_ID)">Delete</button>
+            </td>
+            <td>{{dataCG.SUPPLIER_ID}}</td>
+            <td>{{dataCG.ITEM_CHANGE}}</td>
+            <td>{{dataCG.BARCODE_ITEM_CHANGE}}</td>
+            <td>{{dataCG.NEW_ITEM_CHANGE}}</td>
+            <td>{{dataCG.BARCODE_NEW_ITEM_CHANGE}}</td>
+            <td>{{dataCG.COORDINATORS}}</td>
+            <td>{{dataCG.COORDINATORS_TEL}}</td>
+            <td>{{dataCG.START_DATE_CNANGE_GRADE}}</td>
+            <td>{{dataCG.END_DATE_CNANGE_GRADE}}</td>
+            <td>{{dataCG.REMARK}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+ --> 

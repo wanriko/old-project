@@ -1,0 +1,19 @@
+<div [@routerTransition]>
+  <hr>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'info'" [icon]="'fa-file-text-o'" [label]="'Location Master'" [routerLink]="['/location']" [routerLinkActive]="['router-link-active']"></app-stat>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'info'" [icon]="'fa fa-map-marker'" [label]="'Location Item'" [routerLink]="['/location-item']" [routerLinkActive]="['router-link-active']"></app-stat>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <app-stat [bgClass]="'info'" [icon]="'fa fa-pencil-square-o'" [label]="'Change-Grade'" [routerLink]="['/change-grade']" [routerLinkActive]="['router-link-active']"></app-stat>
+      </div>
+      
+    </div>
+  </div>
+  <hr />
+  
+</div>

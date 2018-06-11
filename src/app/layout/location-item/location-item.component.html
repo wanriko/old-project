@@ -1,0 +1,220 @@
+<div class="container-fluid">
+               <!-- <div class="card card-body" 
+                  [hidden]="hiddenDescript"
+                  style = " 
+                     display: block;
+                     width: 100%;
+                     padding: 0.375rem 0.75rem;
+                     font-size: 1rem">               
+                 <p class="card-text text-center"> {{item_desc}} </p> 
+                </div>  -->
+<!--///////////////////////////////////// Form Search  /////////////////////////////////////////-->
+<br>
+<div>
+ <form ngNativeValidate (ngSubmit)="SearchItemId()"> 
+   
+   <div class="row lign-self-start">
+     <div class="col">  
+       <h4> &nbsp; กรุณากรอกข้อมูล ITEM ID เพื่อกำหนด Location หรือเปลี่ยน status </h4> 
+     </div>    
+   </div>  <br>
+     <div class="row align-self-start"> &nbsp; &nbsp; 
+       <div class="col-lg-3"> 
+         <div class="form-group">
+           <div class="input-group">
+             <div class="input-group-addon col-4"> ITEM ID </div> <!--///////////ITEM MASTER///////////-->
+
+              <input  ng2-auto-complete 
+                     [disabled]="itemIdInput"
+                     value-formatter="myValueFormatter"
+                     style = " 
+                        display: block;
+                        width: 18rem;
+                        padding: 0.375rem 0.75rem;
+                        font-size: 1rem;
+                        line-height: 1.5;
+                        color: #495057;
+                        background-clip: padding-box;
+                        border: 1px solid #ced4da;
+                        border-radius: 0.2rem;  "
+                     [source]="arrayOfStrings"
+                     (valueChanged)="valueChanged($event)"
+                     placeholder="enter text" 
+                     min-chars="1"
+                     [(ngModel)]="ITEM_ID"
+                     autocomplete="off"
+                     max-num-list="100"
+                     no-match-found-text="ไม่พบข้อมูล"
+                     type="text"  
+                     maxlength="15" 
+                     name="ITEM_ID"
+                     class="form-control"     
+                     required 
+              > &nbsp;   
+           </div>
+         </div>              
+       </div>
+         <div class="col-lg-3">    
+           <button type="submit" class="btn btn-success" [hidden]="itemIdInput" > Enter </button>  
+         </div> 
+     </div> 
+
+     <div class="row lign-self-start"  [hidden]="hiddenDescript" > &nbsp; &nbsp;             
+        <div class="col-lg-3"> 
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon col-4"> Item Description </div>
+              <div class="card card-body"   
+                   [hidden]="hiddenDescript"          
+                   style = " 
+                      display: block;
+                      background: #e9ecef;
+                      width: 100%;
+                      padding: 0.375rem 0.75rem;
+                      font-size: 1rem">               
+                <p class="card-text " disabled> {{item_desc}} </p> 
+              </div> 
+            </div>
+          </div>        
+        </div> 
+      </div>
+
+ </form>
+</div> 
+<!-- /////////////////////////////////// End Search  ///////////////////////////////////////-->
+
+
+<!--///////////////////////////////////// Form Insert  /////////////////////////////////////////-->
+
+ <div [hidden]="hiddennoLocation">
+  <form ngNativeValidate (submit)="insertLocation()">
+
+    <div class="row lign-self-start">  &nbsp; &nbsp; 
+        <div class="col-lg-3"> 
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon col-4"> TYPE </div>
+              <select class="form-control" (change)="showLocationsTable()" id="STATUS_AA02" 
+                      [(ngModel)]="LCTitem.STATUS_AA02" required name="STATUS"> 
+                <option *ngFor="let A of globals.type_locate" [value]="A.name">
+                  {{A.descri}}
+                </option> 
+              </select> &nbsp; 
+            </div>
+          </div>        
+        </div> 
+      </div> 
+  </form>
+
+  <br> 
+    <div class="row lign-self-start">  &nbsp; &nbsp;
+      <div class="col">
+            <button  class="btn btn-secondary" (click)=" clear()"> Clear </button>  
+      </div>
+    </div> 
+  <br>
+
+  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"   
+          class="table table-hover">
+    <thead>
+      <tr>
+        <th>LOCATION ID</th>                          
+        <th>STATUS</th>       
+        <th>action</th>                                            
+      </tr>
+    </thead>
+    <tbody>   
+      <tr *ngFor='let location of locations_list; trackBy: index;let i= index'>                          
+        <td>{{ location.LOCATION_ID }}</td>                           
+        <td>{{ location.SATUS_DESCRIPTION }}</td>                                                                                              
+        <td><button class="btn btn-success" (click)="selectLocation(location.LOCATION_ID)"> select </button></td>                                                                                              
+      </tr>
+    </tbody>
+  </table>
+
+</div> 
+<!-- /////////////////////////////////// End Insert ///////////////////////////////////////-->
+
+
+
+<!--///////////////////////////////////// Form Update  /////////////////////////////////////////-->
+ <div [hidden]="hiddenhaveLocation" >
+  <form ngNativeValidate (ngSubmit)="UpdStatusItem()">
+
+    <div class="row lign-self-start"> &nbsp; &nbsp;             
+      <div class="col-lg-3"> 
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-addon col-4"> LOCATION ID </div>
+            <input type="text" class="form-control" maxlength="8" name="LOCATION_ID" [(ngModel)]="LCTitem.LOCATION_ID" disabled>
+          </div>
+        </div>        
+      </div> 
+    </div>
+     
+    <div class="row lign-self-start"> &nbsp; &nbsp;
+      <div class="col-lg-3"> 
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-addon control-label col-4"> STATUS </div>
+            <select class="form-control input-sm" id="STATUS_AA01" 
+                    [(ngModel)]="LCTitem.STATUS_AA01" required name="STATUS"> 
+              <option *ngFor="let A of globals.stat_locate" [value]="A.name">
+                {{A.descri}}
+              </option> 
+            </select> 
+          </div>
+        </div>        
+      </div> 
+    </div> 
+
+    <div class="row lign-self-start"> &nbsp; &nbsp; 
+      <div class="col-lg-3"> 
+        <button type="submit" (click)=" UpdStatusItem(LCTitem)" class="btn btn-success"> submit </button> 
+        &nbsp; &nbsp;
+        <button  class="btn btn-secondary" (click)=" clear()"> Clear </button>  
+      </div> 
+    </div> 
+    
+  </form>
+</div> 
+<!-- /////////////////////////////////// End Update  ///////////////////////////////////////-->
+
+
+<!-- /////////////////////////////////// Show Table  ///////////////////////////////////////-->
+<br> <br>
+<div [hidden]="hiddenTableDefalse">
+  <div class="row lign-self-start" >
+    <div class="col">  
+        <i><h5> &nbsp; แสดง Location ที่มีการกำหนดไว้แล้ว </h5></i>
+    </div>    
+  </div> 
+
+  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"   
+          class="table table-hover">
+    <thead>
+      <tr>
+        <th>LOCATION ID</th>               
+        <th>ITEM ID</th>                
+        <th>STATUS</th>                                                   
+      </tr>
+    </thead>
+    <tbody>   
+      <tr *ngFor='let data of datas; trackBy: index;let i= index'>                          
+        <td>{{ data.LOCATION_ID }}</td>                           
+        <td>{{ data.ITEM_ID }}</td>  
+        <td>{{ data.STATUS_AA01 }}</td>                                                                                              
+      </tr>
+    </tbody>
+  </table>
+</div> 
+<!-- /////////////////////////////////// End Table  ///////////////////////////////////////-->
+</div> 
+
+<!-- <div ng2-auto-complete 
+  [source]="arrayOfStrings"
+  (valueChanged)="valueChanged($event)"
+  placeholder="enter text">
+  <input [ngModel]="model1" />
+</div> -->
+
